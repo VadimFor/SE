@@ -18,7 +18,7 @@ void callback(char* topic, byte* payload, unsigned int length){
     Serial.print((char)payload[i]);
   }
 
-Serial.println(" ");
+	Serial.println(" ");
 }
 
 void suscribeMQTT(char* topic){
@@ -26,9 +26,10 @@ void suscribeMQTT(char* topic){
   client.setCallback(callback);
   
   while (!client.connected()) {
-    Serial.println("Connecting to MQTT...");
+    Serial.println("Connecting to MQTT topic...");
     if (client.connect("ESP32", ubidots_token, ubidots_password)) {
-      Serial.println("Connected to MQTT");     
+      Serial.print("Connected to MQTT topic: ");  
+      Serial.println(topic);     	  
       client.subscribe(topic);
     } else {
       Serial.print("Failed with state ");

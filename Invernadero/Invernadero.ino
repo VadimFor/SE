@@ -1,13 +1,12 @@
 #include <Wire.h>
 #include "MAX30105.h"
-
 #include <ArduinoHttpClient.h>
-
 #include "heartRate.h"
 #include <Adafruit_SSD1306.h>
 #include <string> 
 #include <ArduinoBLE.h>
 #include <sstream>
+#include <stdlib.h>
 
 //AUXILIARES
 #include "aux_wifi.h"
@@ -23,7 +22,9 @@ void setup() {
   Serial.println("Programa iniciado.");
 
   conectarWifi(); //aux_wifi.h
-  
+
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/luminico/lv");
+ 
 }
   
 void loop() {
@@ -35,10 +36,16 @@ void loop() {
   Serial.print("Intensidad lumínica: ");
   Serial.print(lux);
   Serial.println(" lux");
+
+  char luxStr[8];
+  sprintf(luxStr, "%f", lux);
+  
+  if (client.publish((char *)"/v1.6/devices/invernadero/luminico", luxStr)) {
+     Serial.println((std::string(luxStr) + " publicado correctamente.").c_str()) ;
+  }
   
   delay(1000);
 }
-
 
 
 
