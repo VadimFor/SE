@@ -1,8 +1,31 @@
+#include <Wire.h>
+#include "MAX30105.h"
+
+#include <ArduinoHttpClient.h>
+
+#include "heartRate.h"
+#include <Adafruit_SSD1306.h>
+#include <string> 
+#include <ArduinoBLE.h>
+#include <sstream>
+
+//AUXILIARES
+#include "aux_wifi.h"
+#include "aux_mqtt.h"
 
 // Definimos el pin al que está conectado el sensor
 #define SENSOR_PIN A0 
 
-void setup() { Serial.begin(9600);}
+void setup() { 
+  
+  delay(3000); //delay para que inicio el draw
+  Serial.begin(9600);
+  Serial.println("Programa iniciado.");
+
+  conectarWifi(); //aux_wifi.h
+  
+}
+  
 void loop() {
   // Leemos el valor del sensor
   int sensorValue = analogRead(SENSOR_PIN);
@@ -15,6 +38,11 @@ void loop() {
   
   delay(1000);
 }
+
+
+
+
+
 
 
 
