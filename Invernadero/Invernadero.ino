@@ -28,6 +28,9 @@ void setup() {
 }
   
 void loop() {
+
+  client.loop(); //para que recibamos del productor de mqtt
+
   // Leemos el valor del sensor
   int sensorValue = analogRead(SENSOR_PIN);
   float lux = sensorValue * (5.0 / 1023.0); 
@@ -37,6 +40,7 @@ void loop() {
   Serial.print(lux);
   Serial.println(" lux");
 
+
   char luxStr[8];
   sprintf(luxStr, "%f", lux);
   
@@ -44,8 +48,9 @@ void loop() {
      Serial.println((std::string(luxStr) + " publicado correctamente.").c_str()) ;
   }
   
-  delay(1000);
+  delay(3000);
 }
+
 
 
 

@@ -1,7 +1,7 @@
 #include <PubSubClient.h>
-
 WiFiClient wifiClient;
 PubSubClient client(wifiClient);//mqtt
+
 
 const char* mqttServer = "industrial.api.ubidots.com";
 const int mqttPort = 1883;
@@ -14,11 +14,8 @@ void callback(char* topic, byte* payload, unsigned int length){
   Serial.print("Ha llegado mensaje en el topic[");
   Serial.print(topic);
   Serial.print("]. Mensaje: ");
-  for(int i=0; i<length; i++){ 
-    Serial.print((char)payload[i]);
-  }
-
-	Serial.println(" ");
+  for(int i=0; i<length; i++){ Serial.print((char)payload[i]);}
+  Serial.println(" ");
 }
 
 void suscribeMQTT(char* topic){
