@@ -40,7 +40,9 @@ void publishMQTT(char* topic, float msg){
   char msgStr[8];
   sprintf(msgStr, "%f", msg);
 
-  if (client.publish((char *)"/v1.6/devices/invernadero/luminico", msgStr)) {
+  if (client.publish(topic, msgStr)) {
      Serial.println((std::string(msgStr) + " publicado correctamente.").c_str()) ;
-  } 
+  }else{
+    Serial.println("ERROR: Al publicar");
+  }
 }

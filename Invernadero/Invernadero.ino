@@ -12,9 +12,7 @@
 #include "aux_wifi.h"
 #include "aux_mqtt.h"
 #include "aux_telegram.h"
-
-// Definimos el pin al que está conectado el sensor
-#define SENSOR_PIN A0 
+#include "aux_sensores.h"
 
 void setup() { 
   
@@ -24,31 +22,24 @@ void setup() {
 
   conectarWifi(); //aux_wifi.h
 
-  suscribeMQTT((char *)"/v1.6/devices/invernadero/luminico/lv");
- 
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/luminico/lv");//NOTA: es necesario suscribirse para poder publicar.
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedad/lv");//NOTA: es necesario suscribirse para poder publicar.
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/temperatura/lv");//NOTA: es necesario suscribirse para poder publicar.
+
+  dht.begin(); //para que funcione el sensor de temp. y humedad.
+
 }
   
 void loop() {
 
   client.loop(); //para que recibamos del productor de mqtt
-
-  // Leemos el valor del sensor
-  int sensorValue = analogRead(SENSOR_PIN);
-  float lux = sensorValue * (5.0 / 1023.0); 
-
-  // Imprimimos el valor en el monitor serial
-  Serial.print("Intensidad lumínica: ");
-  Serial.print(lux);
-  Serial.println(" lux");
-
-  publishMQTT((char *)"/v1.6/devices/invernadero/luminico", lux);
+  
+  getLuz(true);
+  getTemperatura(true); 
+  getHumedad(true); 
   
   delay(5000);
 }
-
-
-
-
 
 
 /*  SENSOR SUELO
@@ -72,38 +63,6 @@ void loop() {
   Serial.println("%");
   
   delay(1000); 
-}
-
-
-*/
-
-
-
-/*  SENSOR TEMP Y HUMEDAD DHT22
-
-#include "DHT.h"
-
-#define DHTPIN 2          // El pin GPIO al que se conecta el sensor DHT22
-#define DHTTYPE DHT22     // Tipo de sensor DHT22
-
-DHT dht(DHTPIN, DHTTYPE);
-
-void setup() {
-  Serial.begin(9600);
-  dht.begin();
-}
-
-void loop() {
-  delay(2000);
-  
-  float temperature = dht.readTemperature();     // Leer temperatura en grados Celsius
-  float humidity = dht.readHumidity();           // Leer humedad relativa en porcentaje
-  
-  Serial.print("Temperatura: ");
-  Serial.print(temperature);
-  Serial.print(" °C\tHumedad: ");
-  Serial.print(humidity);
-  Serial.println(" %");
 }
 
 
