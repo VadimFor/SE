@@ -52,3 +52,39 @@ float getTemperatura(bool publicar){
 
   return temperature;
 }
+
+//█████████████ＳＥＮＳＯＲ ＳＵＥＬＯ██████████████
+
+#define PIN_SUELO1 A4 
+#define PIN_SUELO2 A5 
+#define PIN_SUELO3 A6 
+#define PIN_SUELO4 A7 
+
+float getHumedadSuelo(bool publicar,int num_sensor){
+
+  if(num_sensor >= 1 && num_sensor <=4){ //solo hay 4 sensores de suelo
+ 
+    int soilValue = 0;     
+    int soilMoisture = 0;
+    int soilPin = 0;
+    
+    switch(num_sensor){
+      case 1: soilPin = PIN_SUELO1;
+      case 2: soilPin = PIN_SUELO2;
+      case 3: soilPin = PIN_SUELO3;
+      case 4: soilPin = PIN_SUELO4;
+    }
+  
+    soilValue = analogRead(soilPin);        
+    soilMoisture = map(soilValue, 0, 1023, 0, 100);  
+
+    Serial.print("Valor: ");
+    Serial.print(soilValue);
+    Serial.print("\tHumedadSuelo: ");
+    Serial.print(soilMoisture);
+    Serial.println("%");
+  
+  }else{
+    Serial.println("ERROR: El sensor de humedad tiene que ser entre el 1 y el 4.");
+  }
+}

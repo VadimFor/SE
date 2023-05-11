@@ -40,30 +40,3 @@ void loop() {
   
   delay(5000);
 }
-
-
-/*  SENSOR SUELO
-
-const int soilPin = A0;
-int soilValue = 0;     
-int soilMoisture = 0; 
-
-void setup() {
-  Serial.begin(9600);  
-}
-
-void loop() {
-  soilValue = analogRead(soilPin);        
-  soilMoisture = map(soilValue, 0, 1023, 0, 100);  
-  
-  Serial.print("Valor: ");
-  Serial.print(soilValue);
-  Serial.print("\tHumedad: ");
-  Serial.print(soilMoisture);
-  Serial.println("%");
-  
-  delay(1000); 
-}
-
-
-*/
