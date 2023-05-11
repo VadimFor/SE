@@ -11,6 +11,7 @@
 //AUXILIARES
 #include "aux_wifi.h"
 #include "aux_mqtt.h"
+#include "aux_telegram.h"
 
 // Definimos el pin al que está conectado el sensor
 #define SENSOR_PIN A0 
@@ -40,19 +41,10 @@ void loop() {
   Serial.print(lux);
   Serial.println(" lux");
 
-
-  char luxStr[8];
-  sprintf(luxStr, "%f", lux);
+  publishMQTT((char *)"/v1.6/devices/invernadero/luminico", lux);
   
-  if (client.publish((char *)"/v1.6/devices/invernadero/luminico", luxStr)) {
-     Serial.println((std::string(luxStr) + " publicado correctamente.").c_str()) ;
-  }
-  
-  delay(3000);
+  delay(5000);
 }
-
-
-
 
 
 
