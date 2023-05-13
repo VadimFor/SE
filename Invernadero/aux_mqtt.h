@@ -97,3 +97,16 @@ void sendSueloDataToUbidots(float suelo1, float suelo2, float suelo3,float suelo
   //Serial.println(payload);
   client.publish(topic, payload);
 }
+
+void conectarTopicos(){
+  //SENSORES
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/luminico/lv");
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedad/lv");
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/temperatura/lv");
+
+  //SUELO
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedadsuelo/lv");
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedadsuelo_2/lv");
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedadsuelo_3/lv");
+  suscribeMQTT((char *)"/v1.6/devices/invernadero/humedadsuelo_4/lv");
+}
