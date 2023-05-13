@@ -1,24 +1,22 @@
 
+char* floatToString(float f) {
+    char* str = (char*) malloc(sizeof(char) * 20); // dynamically allocate memory
+    if(str == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
+
+    sprintf(str, "%.3f", f); // write the float to the string
+
+    return str; // return the string
+}
 
 
 //█████████ＳＥＮＳＯＲ ＬＵＭＩＮＯＳＩＤＡＤ██████████
 
 #define PIN_LUZ A0 
 
-float getLuz(bool publicar){
-   // Leemos el valor del sensor
-  int sensorValue = analogRead(PIN_LUZ);
-  float lux = sensorValue * (5.0 / 1023.0); 
-
-  // Imprimimos el valor en el monitor serial
-  Serial.print("Intensidad lumínica: ");
-  Serial.print(lux);
-  Serial.println(" lux");
-
-  if(publicar){ publishMQTT((char *)"/v1.6/devices/invernadero/luminico", lux);}
-
-  return lux;
-}
+float getLuz(){ return analogRead(PIN_LUZ) * (5.0 / 1023.0);}
 
 //█████ＳＥＮＳＯＲ ＨＵＭＥＤＡＤ Ｙ ＴＥＭＰＥＲＡＴＵＲＡ██████
 
@@ -29,29 +27,8 @@ float getLuz(bool publicar){
 
 DHT dht(DHTPIN, DHTTYPE);
 
-float getHumedad(bool publicar){
-  float humidity = dht.readHumidity();           // Leer humedad relativa en porcentaje
-  
-  Serial.print("Humedad: ");
-  Serial.print(humidity);
-  Serial.println(" %");
-
-  if(publicar){ publishMQTT((char *)"/v1.6/devices/invernadero/humedad", humidity);}
-
-  return humidity;
-}
-
-float getTemperatura(bool publicar){
-  float temperature = dht.readTemperature();     // Leer temperatura en grados Celsius
-  
-  Serial.print("Temperatura: ");
-  Serial.print(temperature);
-  Serial.println(" ºC");
-
-  if(publicar){ publishMQTT((char *)"/v1.6/devices/invernadero/temperatura", temperature);}
-
-  return temperature;
-}
+float getHumedad(){return dht.readHumidity();}
+float getTemperatura(){return dht.readTemperature();}
 
 //█████████████ＳＥＮＳＯＲ ＳＵＥＬＯ██████████████
 
@@ -60,12 +37,10 @@ float getTemperatura(bool publicar){
 #define PIN_SUELO3 A6 
 #define PIN_SUELO4 A7 
 
-float getHumedadSuelo(bool publicar,int num_sensor){
-
+float getHumedadSuelo(int num_sensor){
   if(num_sensor >= 1 && num_sensor <=4){ //solo hay 4 sensores de suelo
  
-    int soilValue = 0;     
-    int soilMoisture = 0;
+    float soilMoisture = 0;
     int soilPin = 0;
     
     switch(num_sensor){
@@ -74,17 +49,6 @@ float getHumedadSuelo(bool publicar,int num_sensor){
       case 3: soilPin = PIN_SUELO3;
       case 4: soilPin = PIN_SUELO4;
     }
-  
-    soilValue = analogRead(soilPin);        
-    soilMoisture = map(soilValue, 0, 1023, 0, 100);  
-
-    Serial.print("Valor: ");
-    Serial.print(soilValue);
-    Serial.print("\tHumedadSuelo: ");
-    Serial.print(soilMoisture);
-    Serial.println("%");
-  
-  }else{
-    Serial.println("ERROR: El sensor de humedad tiene que ser entre el 1 y el 4.");
+     return map(analogRead(soilPin), 0, 1023, 0, 100);
   }
 }

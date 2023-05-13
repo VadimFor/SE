@@ -46,3 +46,54 @@ void publishMQTT(char* topic, float msg){
     Serial.println("ERROR: Al publicar");
   }
 }
+
+//Envia un único mensaje con varias variables
+void sendDataToUbidots(float luz, float temperatura, float humedad){
+  char str_luz[10];
+  char str_temperatura[10];
+  char str_humedad[10];
+
+  char topic[150];
+  char payload[300];
+
+  //Para enviar múltiples variables a la vez
+  dtostrf(luz, 4, 2, str_luz);
+  dtostrf(temperatura, 4, 2, str_temperatura);
+  dtostrf(humedad, 4, 2, str_humedad);
+  
+  sprintf(topic, "%s%s", "/v1.6/devices/", "invernadero");
+  sprintf(payload, "%s", ""); // Cleans the payload
+
+  sprintf(payload, "{\"%s\": %s,", "luminico", str_luz); // Adds the variable label
+  sprintf(payload, "%s\"%s\": %s,", payload, "temperatura", str_temperatura); // Adds the variable label
+  sprintf(payload, "%s\"%s\": %s}", payload, "humedad", str_humedad);
+
+  client.publish(topic, payload);
+}
+
+void sendSueloDataToUbidots(float suelo1, float suelo2, float suelo3,float suelo4){
+  char str_suelo1[10];
+  char str_suelo2[10];
+  char str_suelo3[10];
+  char str_suelo4[10];
+
+  char topic[150];
+  char payload[300];
+
+  //Para enviar múltiples variables a la vez
+  dtostrf(suelo1, 4, 2, str_suelo1);
+  dtostrf(suelo2, 4, 2, str_suelo2);
+  dtostrf(suelo3, 4, 2, str_suelo3);
+  dtostrf(suelo4, 4, 2, str_suelo4);
+  
+  sprintf(topic, "%s%s", "/v1.6/devices/", "invernadero");
+  sprintf(payload, "%s", ""); // Cleans the payload
+
+  sprintf(payload, "{\"%s\": %s,", "humedadsuelo", str_suelo1); // Adds the variable label
+  sprintf(payload, "%s\"%s\": %s,", payload, "humedadsuelo_2", str_suelo2); // Adds the variable label
+  sprintf(payload, "%s\"%s\": %s,", payload, "humedadsuelo_3", str_suelo3);
+  sprintf(payload, "%s\"%s\": %s}", payload, "humedadsuelo_4", str_suelo4);
+
+  //Serial.println(payload);
+  client.publish(topic, payload);
+}
