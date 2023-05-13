@@ -1,3 +1,3 @@
 # SE
 4º. Optativa Computadores. Arduino
-![Screenshot](/Invernadero/verde.jpeg)
+![Screenshot](/Invernadero/verde.jpg)
