@@ -1,3 +1,2 @@
-# SE
-4º. Optativa Computadores. Arduino
+# Sistemas Embebidos
 ![Screenshot](/Invernadero/verde.jpg)
