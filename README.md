@@ -1,2 +1,2 @@
 # Sistemas Embebidos
-![Screenshot](/Invernadero/verde.jpg)
+![Screenshot](verde.jpg)
